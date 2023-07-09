@@ -140,7 +140,7 @@ public class FXMLController implements Initializable {
     private void lineRun(ActionEvent event) throws FileNotFoundException, IOException {
         if(u==0){
           r = new BufferedReader(new FileReader(instructMem));
-          e = new execute(instructMem ,dataMem ,pclbl , aclbl , tlbl );
+          e = new execute(instructMem ,dataMem ,pclbl , aclbl , tlbl ,  dataMemId );
           u=1;
         }
          String line;
@@ -170,7 +170,7 @@ public class FXMLController implements Initializable {
     private void run(ActionEvent event) {
         if(instructMem !=null && dataMem !=null){
             try {
-                execute e = new execute(instructMem ,dataMem ,pclbl , aclbl , tlbl );
+                execute e = new execute(instructMem ,dataMem ,pclbl , aclbl , tlbl , dataMemId );
                 e.perfectrun();
             } catch (IOException ex) {
                 Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);

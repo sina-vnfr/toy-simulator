@@ -1,5 +1,6 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,6 +27,7 @@ public class execute {
     private Label pclbl;
     private Label aclbl;
     private Label tlbl;
+    private TextArea dataMemId;
     //pc
     private int pc=0;
     private String pcs="0000";
@@ -48,13 +51,13 @@ public class execute {
     
   
     
-    public execute(File instructs , File Data  , Label pclbl , Label aclbl , Label tlbl ){
+    public execute(File instructs , File Data  , Label pclbl , Label aclbl , Label tlbl ,  TextArea dataMemId){
         this.instructs = instructs;
         this.Data = Data;
         this.aclbl = aclbl;
         this.pclbl = pclbl;
         this.tlbl = tlbl;
-      
+        this.dataMemId = dataMemId;
     }
     
     public void perfectrun() throws FileNotFoundException, IOException{
@@ -455,8 +458,9 @@ public class execute {
     public String datamem(File Data , String address , String data , int wr) throws FileNotFoundException, IOException{
         
          BufferedReader r = new BufferedReader(new FileReader(Data));
+         BufferedReader r2 = new BufferedReader(new FileReader(Data));
          String line;
-        
+         StringBuilder sb = new StringBuilder();
         //read from Data file
         if(wr == 0){
             
@@ -472,16 +476,51 @@ public class execute {
             
         }else{
         //write to Data file    
-            FileWriter fw = new FileWriter(Data);          
+       
+            FileWriter fw = new FileWriter(Data.toPath().toFile() , true);
+            //FileWriter fw2 = new FileWriter(Data.toPath().toFile());
+             System.out.println("rrrrr");
+            BufferedWriter br = new BufferedWriter(fw); 
               while ((line = r.readLine()) != null){
                   line = line.replaceAll(" ", "");
                   line = line.replaceAll("  ", "");
                   String inst = line.substring(0, 4);
+                   System.out.println("hhhhh");
                   if((inst.compareTo(address)) ==0){
-                    fw.write("\t\t"+data);
+                       System.out.println("ggggg");
+                       
+                      while((line = r2.readLine()) != null){
+                           String line2 = line.replaceAll(" ", "");
+                           line2 = line2.replaceAll("  ", "");
+                           String inst1 = line2.substring(0, 4);
+                           System.out.println("fffff");
+                          if((inst1.compareTo(address)) !=0){
+                              sb.append(line);
+                              sb.append(System.lineSeparator());
+                              
+                              System.out.println(sb.toString());
+                          }
+                      }
+                      FileWriter fw2 = new FileWriter(Data.toPath().toFile());
+                      fw2.write(sb.toString());
+                      fw2.close();
+                    br.write(address + "\t\t" + data);
+                    br.newLine();
+                    br.close();
+                    dataMemId.setText(sb.toString()+address+"\t\t"+ data);
+                    return "data saved";
+                   
                   }
               }
-            fw.write(address + "\t\t" + data);
+             br.write("\n"+address + "\t\t" + data);
+             br.newLine();
+             br.close();
+             System.out.println("aaaaa");
+             StringBuilder content = new StringBuilder();
+             while((line = r2.readLine()) != null){
+                content.append(line).append("\n");
+              }
+            dataMemId.setText(content.toString());
             return "data saved";
         }
         return null;
