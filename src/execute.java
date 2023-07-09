@@ -120,14 +120,16 @@ public class execute {
         // ADC
         if(inst.contains("0001")&& (address.compareTo(pcs))==0){
             
+             
              String op1s = datamem(Data,dataaddress,"0",0);
              int op1 = Integer.parseInt(op1s, 2);
+              System.out.println("adc is execute");
              A = A + op1;
              As = Integer.toBinaryString(A);
               while(As.length() < 16){
                    As = "0" + As;
                }
-            System.out.println("adc is execute");
+           
               
                pc = pc + 1;
              pcs = Integer.toHexString(pc);
@@ -463,11 +465,12 @@ public class execute {
          StringBuilder sb = new StringBuilder();
         //read from Data file
         if(wr == 0){
-            
+           
              while ((line = r.readLine()) != null){
                   line = line.replaceAll("      ", "");
                   line = line.replaceAll("		", "");
                   String inst = line.substring(0, 4);
+                    inst =inst.toLowerCase();
                   if((inst.compareTo(address)) ==0){
                    line = line.substring(4);
                    return line;
@@ -486,6 +489,7 @@ public class execute {
                   line = line.replaceAll("  ", "");
                   String inst = line.substring(0, 4);
                    System.out.println("hhhhh");
+                   address = address.toUpperCase();
                   if((inst.compareTo(address)) ==0){
                        System.out.println("ggggg");
                        
@@ -504,15 +508,18 @@ public class execute {
                       FileWriter fw2 = new FileWriter(Data.toPath().toFile());
                       fw2.write(sb.toString());
                       fw2.close();
+                      address =address.toUpperCase();
                     br.write(address + "\t\t" + data);
                     br.newLine();
                     br.close();
+                    
                     dataMemId.setText(sb.toString()+address+"\t\t"+ data);
                     return "data saved";
                    
                   }
               }
-             br.write("\n"+address + "\t\t" + data);
+              address =address.toUpperCase();
+             br.write(address + "\t\t" + data);
              br.newLine();
              br.close();
              System.out.println("aaaaa");
