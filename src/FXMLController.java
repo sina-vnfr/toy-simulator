@@ -139,26 +139,74 @@ public class FXMLController implements Initializable {
        @FXML
     private void lineRun(ActionEvent event) throws FileNotFoundException, IOException {
         if(u==0){
-          r = new BufferedReader(new FileReader(instructMem));
+         
           e = new execute(instructMem ,dataMem ,pclbl , aclbl , tlbl ,  dataMemId );
           u=1;
         }
-         String line;
-         String pclbls;
-         if(u==1){
-             while((line = r.readLine()) != null){
-                 line = line.replaceAll("		", "");
-                 line = line.replaceAll(" ", "");
-                 pclbls = pclbl.getText();
-                 line = line.substring(4);
-                 e.execode(line,pclbls );
-                 if(pclbls.compareTo(pclbl.getText()) != 0){
-                     break;
-                 }
-                 
-             }
-         }
-      
+
+
+        
+         String address;
+         int pcline =0;
+         String pclines;
+         String pclbls = pclbl.getText();
+         int i=0;
+         
+        if(u==1){
+    
+            
+              
+        BufferedReader r = new BufferedReader(new FileReader(instructMem));
+        String line;
+        int numberline=0;
+        
+        BufferedReader n = new BufferedReader(new FileReader(instructMem));
+        while((line = n.readLine()) != null){
+            numberline++;
+        }
+        
+        String pcs = pclbl.getText();
+        int pc = Integer.parseInt(pcs);
+        String pcs1;
+        int pc1=0;
+        
+        while(i<2){
+            
+            if(pc < numberline ){
+                 System.out.println("NEW INIT");
+               r = new BufferedReader(new FileReader(instructMem));
+            }
+           
+                
+               
+            while((line = r.readLine()) != null){
+                address = line.substring(0, 4);
+                line = line.substring(4);
+                line = line.replaceAll("		", "");
+                line = line.replaceAll(" ", "");
+                
+             
+               
+                pcs1 = pclbl.getText();
+                pc1 = Integer.parseInt(pcs);
+                e.execode(line, address);
+                pcs = pclbl.getText();
+                pc = Integer.parseInt(pcs);
+                
+                if(pc1 != pc){
+                    break;
+                }
+            }
+            
+             if(pc1 != pc){
+                    break;
+                }
+            i++;
+        }
+            
+
+        }
+         
     }
     
     

@@ -64,17 +64,27 @@ public class execute {
         
         BufferedReader r = new BufferedReader(new FileReader(instructs));
         String line;
-      
+        int numberline=0;
         
-        while(i<2){
-            
-            
-            pc =0;
+        BufferedReader n = new BufferedReader(new FileReader(instructs));
+        while((line = n.readLine()) != null){
+            numberline++;
+        }
+        
+         pc =0;
              pcs = Integer.toHexString(pc);
                while(pcs.length() < 4){
                    pcs = "0" + pcs;
                }
-               
+        
+        while(i<2){
+            
+            if(pc < numberline ){
+                 System.out.println("NEW INIT");
+               r = new BufferedReader(new FileReader(instructs));
+            }
+          
+                
                
             while((line = r.readLine()) != null){
                 address = line.substring(0, 4);
@@ -82,7 +92,7 @@ public class execute {
                 line = line.replaceAll("		", "");
                 line = line.replaceAll(" ", "");
                 
-               
+              
                 execode(line, address);
             }
             i++;
@@ -182,7 +192,7 @@ public class execute {
                    As = "0" + As;
                }
             
-            
+             System.out.println("sbc is execute");
             
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
@@ -198,6 +208,11 @@ public class execute {
         
         // ROR
         if(inst.contains("0100") && (address.compareTo(pcs))==0){
+            
+            System.out.println(address);
+             System.out.println(pcs);
+            
+            
             String lastbit = As.substring(As.length() - 1);
             As = As.substring(0,As.length() - 1);
             As = "0" + As;
@@ -205,7 +220,7 @@ public class execute {
                    As = "0" + As;
                }
             C =Integer.parseInt(lastbit);
-          
+              System.out.println("ror is executed");
             
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
@@ -223,7 +238,7 @@ public class execute {
         if(inst.contains("0101") && (address.compareTo(pcs))==0){
              
             Ts = As ;
-            
+             System.out.println("tat is execute");
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
                while(pcs.length() < 4){
@@ -297,7 +312,7 @@ public class execute {
                }
             
              C = 0;
-             
+              System.out.println("ldc is execute");
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
                while(pcs.length() < 4){
@@ -328,7 +343,7 @@ public class execute {
                }
             }
             
-            
+             System.out.println("bcc is execute");
             aclbl.setText(As);
                 pclbl.setText(pcs);
                 tlbl.setText(Ts);
@@ -353,7 +368,7 @@ public class execute {
                  pcs = "0" + pcs;
                }
             }
-            
+             System.out.println("bne is execute");
             aclbl.setText(As);
                 pclbl.setText(pcs);
                 tlbl.setText(Ts);
@@ -376,7 +391,7 @@ public class execute {
                    As = "0" + As;
                }
             
-            
+             System.out.println("ldi is execute");
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
                while(pcs.length() < 4){
@@ -392,7 +407,7 @@ public class execute {
         // STT
         if(inst.contains("1101") && (address.compareTo(pcs))==0){
              
-            
+             System.out.println("stt is execute");
              String dd = Integer.toHexString(A);
               while(dd.length() < 4){
                  dd = "0" + dd;
@@ -421,7 +436,7 @@ public class execute {
               while(As.length() < 16){
                    As = "0" + As;
                }
-            
+             System.out.println("lda is execute");
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
                while(pcs.length() < 4){
@@ -442,7 +457,7 @@ public class execute {
                  dd = "0" + dd;
                }
               datamem(Data,dataaddress,As,1);
-            
+             System.out.println("sta is execute");
                 pc = pc + 1;
              pcs = Integer.toHexString(pc);
                while(pcs.length() < 4){
@@ -482,22 +497,22 @@ public class execute {
        
             FileWriter fw = new FileWriter(Data.toPath().toFile() , true);
             //FileWriter fw2 = new FileWriter(Data.toPath().toFile());
-             System.out.println("rrrrr");
+            
             BufferedWriter br = new BufferedWriter(fw); 
               while ((line = r.readLine()) != null){
                   line = line.replaceAll(" ", "");
                   line = line.replaceAll("  ", "");
                   String inst = line.substring(0, 4);
-                   System.out.println("hhhhh");
+                  
                    address = address.toUpperCase();
                   if((inst.compareTo(address)) ==0){
-                       System.out.println("ggggg");
+                      
                        
                       while((line = r2.readLine()) != null){
                            String line2 = line.replaceAll(" ", "");
                            line2 = line2.replaceAll("  ", "");
                            String inst1 = line2.substring(0, 4);
-                           System.out.println("fffff");
+                         
                           if((inst1.compareTo(address)) !=0){
                               sb.append(line);
                               sb.append(System.lineSeparator());
